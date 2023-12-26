@@ -41,8 +41,8 @@ func displayBanner() {
 # Version: v_1.0                                                                                                #
 #################################################################################################################
 
--c	Collect all URLs from the target using waybackurls
 -d      Target domain
+-c	Collect all URLs from the target using waybackurls
 -p	Generate param URLs
 
 `)
