@@ -42,12 +42,18 @@ func displayBanner() {
 #################################################################################################################
 
 -d      Target domain
--c	Collect all URLs from the target using waybackurls
--p	Generate param URLs
+-c      Collect all URLs from the target using waybackurls
+-p      Generate param URLs
 
 `)
 }
 
+func installWaybackURLs() error {
+	cmd := exec.Command("go", "install", "github.com/tomnomnom/waybackurls@latest")
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	return cmd.Run()
+}
 
 func processURL(url string) string {
 	// Check if the URL contains both '?' and '='
@@ -67,6 +73,11 @@ func processURL(url string) string {
 }
 
 func collectURLs(targetDomain string) error {
+	// Install waybackurls as a dependency
+	if err := installWaybackURLs(); err != nil {
+		return fmt.Errorf("error installing waybackurls: %v", err)
+	}
+
 	cmd := exec.Command("waybackurls", targetDomain)
 	output, err := cmd.Output()
 	if err != nil {
